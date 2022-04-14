@@ -30,32 +30,51 @@ def emplacement_moutons(moutons):
 
 def déplacement(liste, moutons):
     "déplace un mouton au maximum"
-    if fltk.touche_pressee("Right") == True:
-        moutons = [(0,4), (1,4), (2, 4), (4,4)]
-        fltk.efface("sheep")
-        emplacement_moutons(moutons)
+    for i, elem in enumerate(moutons):
+        for j, elems in enumerate(moutons):
+            x, y = elem
+            if x < 4 and x >= 0:
+                for b in range(len(liste[0])):
+                    if liste[0][b] != None:
+                        moutons[j] = (j, b)
+                        emplacement_moutons(moutons)
+            
+            if y < 4:
+                pass
+    return None
 
-largeur = 800
-hauteur = 600
-fltk.cree_fenetre(largeur, hauteur)
 
-liste = [[None, 'B' , None, 'B' , None],
-        ['B' , 'B' , None, None, None],
-        [None, 'G' , 'B' , 'B' , None],
-        [None, 'B' , 'G' , None, None],
-        [None, None, None, 'B' , None]]
+def check(ligne):
+    """
+    """
+    pass
 
-moutons = [(0,4), (1,3), (2,4), (4,4)]
 
-def fin():
-    '''
-    '''
+if __name__ == '__main__':
+
+    largeur = 800
+    hauteur = 600
+    fltk.cree_fenetre(largeur, hauteur)
+
+    liste = [[None, 'B' , None, 'B' , None],
+            ['B' , 'B' , None, None, None],
+            [None, 'G' , 'B' , 'B' , None],
+            [None, 'B' , 'G' , None, None],
+            [None, None, None, 'B' , None]]
+
+    moutons = [(0,4), (1,3), (2,4), (4,4)]
+
     plateau(liste)
     jeu(liste)
-    
-    déplacement(liste, moutons)
+    emplacement_moutons(moutons)
+
+    while True:
         
+    ### INTERFACE MENU ###
+        fltk.mise_a_jour()
+        ev = fltk.donne_ev()
+        tev = fltk.type_ev(ev)
 
-fin()
-
-fltk.attend_fermeture()
+        if tev == 'ClicGauche':
+            direction = tev
+            fltk.attend_fermeture()
