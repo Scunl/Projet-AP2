@@ -1,16 +1,13 @@
 import fltk
 
 
-
-
 def plateau(liste):
-
     for i in range(1, len(liste)):     
         fltk.ligne(0, i*hauteur/len(liste), largeur, i*hauteur/len(liste), epaisseur=3)
 
     for i in range(1, len(liste[0])):
         fltk.ligne(i*largeur/len(liste[0]),0, i*largeur/len(liste[0]), hauteur, epaisseur=3)
-    return None
+
 
 
 
@@ -88,7 +85,7 @@ def bush(buissons):
     return None
 
 
-buissons = [(2, 1), (4, 1), (1, 2), (2, 2), (3, 3), (4, 3), (2, 5), (4, 5)]
+moutons = [(0,4), (1,3), (2,4), (4,4)]
 
 largeur = 800
 hauteur = 800
@@ -100,6 +97,6 @@ liste = [[None, 'B' , None, 'B' , None],
         [None, None, None, 'B' , None]]
 
 
-if __name__ == "__main__":
-    plt = plateau(liste)
+
+plateau(liste)
     
