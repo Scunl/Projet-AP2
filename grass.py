@@ -1,6 +1,5 @@
 import fltk
 
-
 def creation(choix_map):
 
     file = open(choix_map)
@@ -25,7 +24,6 @@ def creation(choix_map):
         
     return liste, moutons
 
-liste, moutons = creation("./maps/big/big1.txt")
 
 def grass(largeur, hauteur, moutons, liste):
     fltk.efface('grass')
@@ -37,7 +35,7 @@ def grass(largeur, hauteur, moutons, liste):
                            y * (hauteur / len(liste)),
                            x * (largeur / len(liste[0])) + (20*largeur)/100,
                            y * (hauteur / len(liste)) + (20*hauteur)/100,
-                           couleur='black', remplissage='#FF1000', epaisseur=3, tag='grass')
+                           couleur='black', remplissage='#FF0000', epaisseur=3, tag='grass')
             fltk.image(x * (largeur / len(liste[0])) + (largeur / len(liste[0]))/2,
                        y * (hauteur / len(liste)) + (hauteur / len(liste))/2,
                        './media/sheep_grass.png',
