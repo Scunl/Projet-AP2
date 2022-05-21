@@ -33,8 +33,8 @@ def grass(largeur, hauteur, moutons, liste):
         if liste[y][x] == 2:
             fltk.rectangle(x * (largeur / len(liste[0])),
                            y * (hauteur / len(liste)),
-                           x * (largeur / len(liste[0])) + (20*largeur)/100,
-                           y * (hauteur / len(liste)) + (20*hauteur)/100,
+                           x * (largeur / len(liste[0])) + (largeur)/100,
+                           y * (hauteur / len(liste)) + (hauteur)/100,
                            couleur='black', remplissage='#FF0000', epaisseur=3, tag='grass')
             fltk.image(x * (largeur / len(liste[0])) + (largeur / len(liste[0]))/2,
                        y * (hauteur / len(liste)) + (hauteur / len(liste))/2,
