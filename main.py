@@ -7,10 +7,9 @@ import grass
 import os
 import sys
 import graphic
-import time
 
-largeur = 1920
-hauteur = 1080
+largeur = 1000
+hauteur = 600
 
 
 
@@ -41,8 +40,7 @@ def menu():
     image(largeur//2 , hauteur*1/7, "./media/peesh.png", "nw")
     image(largeur//20, hauteur*1/3, "./jouer.png", "nw")
     image(largeur//2, hauteur*1/7 + 10, "./media/grass.png", "sw")
-    image(largeur//20, hauteur//2, "./Settings.png", "nw")
-    image(largeur//20, hauteur//1.5, "./Quitter.png", "nw")
+    image(largeur//20, hauteur//2, "./Quitter.png", "nw")
     
     return None
 
@@ -51,21 +49,32 @@ def menu():
 
 
 def jeu(moutons, liste):
-    """Fonction principal permettant de lancer une map choisit au préalable."""
+    """Fonction principal permettant de lancer une map et jouer choisit au préalable."""
     win = grass.condition(liste)
     plateau.lignes(largeur, hauteur, liste)
-    plateau.items(largeur, hauteur, liste)
+    plateau.emplacement_objet(largeur, hauteur, liste)
     plateau.emplacement_moutons(largeur, hauteur, moutons, liste)
     t = False
     while t != True :
+
+        mise_a_jour()
+        ev = donne_ev()
+        tev = type_ev(ev)
+
+        if tev == 'ClicGauche':
+            efface_tout()
+            t = True
+            menu()
+            
+
         direction = touche(attend_ev())
         moutons = sheep.Direction(moutons, direction, liste)
         plateau.emplacement_moutons(largeur, hauteur, moutons, liste)
-        solu = grass.grass(largeur, hauteur, moutons, liste)
-        
+        solu = grass.sheep_grass(largeur, hauteur, moutons, liste)
         if solu == win:
             t = True
-
+            graphic.win_screen(largeur, hauteur)
+            attend_clic_gauche()
 
     return True
 
@@ -146,13 +155,13 @@ def map(path):
                 if zone_clic_menu((largeur*0.9, hauteur*0.1*i + 100), elem):
                     efface_tout()
                     liste, moutons = grass.creation(path + "/" + elem)
-                    print(solveur(liste, moutons))
+                    print(doublons(catastrophe1(liste, moutons)))
                     jeu(moutons, liste)
                     jeua = 0
 
 
 def principal():
-    """Permet de lancer une map prédéfini, et de rediriger vers la fonction type_map() si on décide de la map qu'on lance."""
+    """Permet d'être redirigé vers la selection de map ou quitter le jeu."""
     
     
     while True:
@@ -166,44 +175,30 @@ def principal():
         if tev == 'ClicGauche':
             if zone_clic_menu((largeur//20, hauteur//3),"Jouer"):
                 efface_tout()
-                liste, moutons = grass.creation("./maps/map_grp/map1.txt")
-                print(solveur(liste, moutons))
-                jeu(moutons, liste)
-                break
-
-            if zone_clic_menu((largeur//20, hauteur//2), 'Settings'):
-                efface_tout()
                 type_map()
                 break
 
-            if zone_clic_menu((largeur//20, hauteur//1.5), "Quitter"):
+            if zone_clic_menu((largeur//20, hauteur//2), "Quitter"):
                 efface_tout()
                 mise_a_jour()
                 exit()
 
-def extraction(liste):
-    """Permet d'extraire le nombre d'éléments G de la liste. Cette fonction retourne la liste des herbes sans les coordonées."""
-    herbe = []
-    for ligne in liste:
-        for element in ligne:
-            if element == 'G':
-                herbe.append(element)
-    return herbe
-
 def check_win(liste, moutons):
-    """Permet de vérifier si le nombre de case grass est égale au nombre de moutons sur une case grass. 
+    """Permet de vérifier si le nombre de case grass est égale au nombre de moutons sur une case grass.
     Retourne True si c'est égal et False à l'inverse"""
     a = 0
-    for emplacement in moutons:
-        a, b = emplacement
-        if liste[a][b] == "G":
-            a += 1
-    if a == len(extraction(liste)):
-        return True
+    for elem in moutons:
+
+        y, x = elem
+        if liste[x][y] == 2:
+            a = a + 1
+        if a == grass.condition(liste):
+            return True
     return False
+    
 
 
-def solveur(plateau, moutons, visite=None):
+def catastrophe1(plateau, moutons, visite=None):
     """Solveur permettant de trouver la solution de n'importe quelle map."""
     if visite == None:
         visite = set()
@@ -214,12 +209,42 @@ def solveur(plateau, moutons, visite=None):
     visite.add(tuple(moutons))
     for i in ['Left', 'Right', 'Up', 'Down']:
         temp = list(moutons)
+        moutons = moutons.copy()
         sheep.Direction(moutons, i, plateau)
-        s = solveur(plateau, moutons, visite)
+        s = catastrophe1(plateau, moutons, visite)
         if s != None:
             return [i] + s
         moutons = temp
     return None
+
+def catastrophe2(liste, moutons):
+    visite = set()
+    a_traiter = [(moutons, [])]
+    while len(a_traiter) != 0:
+        temp = a_traiter.pop(0)
+        if check_win(liste, temp[0]):
+            return temp[1]
+        if tuple(temp[0]) in visite:
+            del a_traiter[0]
+        else:
+            visite.add(tuple(temp[0]))
+            for direction in ['Down', 'Right', 'Up', 'Left']:
+                temp2 = temp[0].copy()
+                sheep.Direction(temp2, direction, liste)
+                a_traiter.append((temp2, temp[1] + [direction]))
+    return None
+
+def doublons(liste):
+    liste2 = []
+    if not liste:
+        return None
+    liste2.append(liste[0])
+    for i in range(1, len(liste)):
+        if liste[i] != liste[i-1]:
+            liste2.append(liste[i])
+    return liste2
+
+
 
 
 
@@ -230,9 +255,4 @@ if __name__ == "__main__":
         efface_tout()
         menu()
         principal()
-        
-        
-
-
-        
         

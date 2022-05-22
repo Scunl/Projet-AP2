@@ -6,28 +6,26 @@ def creation(choix_map):
 
     file = open(choix_map)
     lines = file.readlines()
-    
     file.close()
 
     liste = []
     moutons = []
-    for i, line in enumerate(lines):
+    for i, ligne in enumerate(lines):
         liste.append([])
-        for j in range(len(lines)):
-            if line[j] == "_":
+        for j in range(len(lines[i])):
+            if ligne[j] == "_":
                 liste[i].append(0)
-            elif line[j] == "S":
+            if ligne[j] == "S":
                 moutons.append((j, i))
                 liste[i].append(0)
-            elif line[j] == "B":
+            if ligne[j] == "B":
                 liste[i].append(1)
-            elif line[j] == "G":
+            if ligne[j] == "G":
                 liste[i].append(2)
-        
     return liste, moutons
 
 
-def grass(largeur, hauteur, moutons, liste):
+def sheep_grass(largeur, hauteur, moutons, liste):
     """Réalise un carré de côté varaible qui se place sur une case de la map lorsqu'un mouton se trouve sur une case grass."""
     fltk.efface('grass')
     solu = 0

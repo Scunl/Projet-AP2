@@ -24,7 +24,7 @@ def lignes(largeur, hauteur, liste):
     return None
 
 
-def items(largeur, hauteur, liste):
+def emplacement_objet(largeur, hauteur, liste):
     """Place les buissons et les herbes."""
 
     for i in range(len(liste)):
