@@ -9,9 +9,9 @@ def ver(tuples):
 def Droite(moutons, lst):
     """Déplace vers l'est."""
 
-    print("init:", moutons)
+    
     moutons.sort(reverse=True, key=hor)
-    print("sort:", moutons)
+    
     for i in range(len(moutons)):
         x, y = moutons[i]
         for j in range(len(lst[0])):
@@ -24,9 +24,9 @@ def Droite(moutons, lst):
 def Gauche(moutons, lst):
     """Déplace vers l'ouest."""
 
-    print("init:", moutons)
+    
     moutons.sort(reverse=False, key=hor)
-    print("sort:", moutons)
+    
     for i in range(len(moutons)):
         x, y = moutons[i]
         for j in range(len(lst[0])):
@@ -39,9 +39,9 @@ def Gauche(moutons, lst):
 def Haut(moutons, lst):
     """Déplace vers le nord."""
 
-    print("init:", moutons)
+    
     moutons.sort(reverse=False, key=ver)
-    print("sort:", moutons)
+    
     for i in range(len(moutons)):
         x, y = moutons[i]
         for j in range(len(lst)):
@@ -54,9 +54,9 @@ def Haut(moutons, lst):
 def Bas(moutons, lst):
     """Déplace vers le sud."""
 
-    print("init:", moutons)
+    
     moutons.sort(reverse=True, key=ver)
-    print("sort:", moutons)
+    
     for i in range(len(moutons)):
         x, y = moutons[i]
         for j in range(len(lst)):

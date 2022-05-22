@@ -38,16 +38,3 @@ def items(largeur, hauteur, liste):
                            (i * hauteur) / len(liste) + (hauteur / len(liste))/2,
                            "./media/grass.png", "center")
     return None
-
-
-
-
-
-
-
-
-
-
-
-
-
