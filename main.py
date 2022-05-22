@@ -215,7 +215,6 @@ def solveur(plateau, moutons, visite=None):
     for i in ['Left', 'Right', 'Up', 'Down']:
         temp = list(moutons)
         sheep.Direction(moutons, i, plateau)
-        print(visite)
         s = solveur(plateau, moutons, visite)
         if s != None:
             return [i] + s
